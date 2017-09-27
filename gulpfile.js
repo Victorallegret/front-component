@@ -4,11 +4,10 @@ var autoprefixer  = require('gulp-autoprefixer'),
     browserSync   = require('browser-sync'),
     concat        = require('gulp-concat'),
     critical      = require('critical'),
-    data          = require('gulp-data'),
-    fs            = require('fs'),
     gulp          = require('gulp'),
     imagemin      = require('gulp-imagemin'),
-    jade          = require('gulp-jade'),
+    slim          = require('gulp-slim'),
+    coffee        = require('gulp-coffee'),
     minifyCss     = require('gulp-minify-css'),
     minifyHtml    = require('gulp-minify-html')
     notify        = require('gulp-notify'),
@@ -19,27 +18,24 @@ var autoprefixer  = require('gulp-autoprefixer'),
     sass          = require('gulp-sass'),
     uglify        = require('gulp-uglify'),
     uncss         = require('gulp-uncss');
+    include       = require("gulp-include"); // allow 'require' word on files
 
 // Paths
 // ----------------------------------------------------------------------------
 
 // Paths for source
-var bower_source  = './source/bower_components',
-    css_source    = './source/assets/stylesheets/',
-    img_source    = './source/assets/images/',
-    js_source     = './source/assets/javascripts',
-    source        = './source';
+var bower_source   = './source/bower_components',
+    sass_source    = './source/assets/stylesheets/',
+    img_source     = './source/assets/images/',
+    coffee_source  = './source/assets/javascripts',
+    source         = './source';
 
 // Paths for build
-var bower_build   = './build/bower_components',
-    css_build     = './build/assets/stylesheets/',
-    img_build     = './build/assets/images/',
-    js_build      = './build/assets/javascripts',
-    build         = './build';
-
-// Json file acts as database
-// ----------------------------------------------------------------------------
-var database = JSON.parse(fs.readFileSync('./data/database.json', { encoding: 'utf8' }))
+var bower_build    = './build/bower_components',
+    sass_build     = './build/assets/stylesheets/',
+    img_build      = './build/assets/images/',
+    coffee_build   = './build/assets/javascripts/',
+    build          = './build';
 
 
 // Tasks
@@ -50,61 +46,77 @@ var database = JSON.parse(fs.readFileSync('./data/database.json', { encoding: 'u
 gulp.task('clean', function () {
   return gulp.src(build, { read: false})
     .pipe(rimraf())
-    .pipe(notify('/build deleted, run gulp'));
+    .pipe(notify('Prod folder deleted !'));
 });
 
 
-// Compile jade files to minified html
+// Compile slim files to minified html
 // ------------------------------------
-gulp.task('templates', function () {
-  return gulp.src(source + '/**/*.jade')
-    .pipe(jade({
-      pretty: true,
-      data: database
+gulp.task('slim', function () {
+  return gulp.src(source + '/**/*.slim')
+    .pipe(slim({
+      pretty: false,
+      include: true
     }))
     .pipe(minifyHtml())
-    .pipe(gulp.dest(build))
+    .pipe(gulp.dest(build)) // mettre ici le chemin de placement des html
     .pipe(reload({stream:true}))
-    .pipe(notify('Templates task complete!'));
+    .pipe(notify('Slim compilation completed !'));
 });
 
 
-// Compile SCSS + autoprefixer
+// Compile SASS + autoprefixer
 // ------------------------------------
-gulp.task('css', function () {
-  return gulp.src(css_source + '/*.scss')
+gulp.task('sass', function () {
+  return gulp.src(sass_source + '/main.sass')
     .pipe(sass())
-    .pipe(autoprefixer())
-    .pipe(gulp.dest(css_build))
+    .pipe(sass.sync().on('error', sass.logError))
+    .pipe(autoprefixer({
+      browsers: ['last 2 versions'],
+      cascade: false
+    }))
+    .pipe(minifyCss())
+    .pipe(gulp.dest(sass_build))
     .pipe(reload({stream:true}))
-    .pipe(notify('Css task complete!'));
+    .pipe(notify('Sass compilation completed !'));
 });
 
 
 // Remove unused css
 // ------------------------------------
 gulp.task('uncss', function () {
-  return gulp.src(css_build + '/app.css')
+  return gulp.src(sass_build + '/app.css')
    .pipe(uncss({
       html: [build + '/**/*.html']
    }))
    .pipe(minifyCss())
-   .pipe(gulp.dest(css_build))
-   .pipe(notify('Unused CSS removed!'));
+   .pipe(gulp.dest(sass_build))
+   .pipe(notify('Unused CSS removed !'));
 });
 
 
-// Concatenate and minify JS
+// Concatenate and minify coffee
 // ------------------------------------
-gulp.task('js', function() {
-  return gulp.src(source + '/**/*.js')
-    .pipe(concat('all.js'))
-    .pipe(gulp.dest(js_build))
+gulp.task('coffee', function() {
+  gulp.src(coffee_source + '/*.coffee')
+
+    .pipe(coffee())
+    .pipe(gulp.dest(coffee_build))
     .pipe(rename('all.min.js'))
     .pipe(uglify())
-    .pipe(gulp.dest(js_build))
-    .pipe(reload({stream:true}))
-    .pipe(notify('Js task complete!'));
+    .pipe(gulp.dest('coffee_build'));
+
+    // .pipe(include({ extensions: "coffee" }))
+    // .pipe(coffee({bare: true}))
+    // .pipe(include({ extensions: "js" }))
+    // .pipe(gulp.dest(coffee_build))
+    // .pipe(concat('all.js'))
+    // .pipe(gulp.dest(coffee_build))
+    // .pipe(rename('all.min.js'))
+    // .pipe(uglify())
+    // .pipe(gulp.dest(coffee_build))
+    // .pipe(reload({stream:true}))
+    // .pipe(notify('Coffee compilation completed !'));
 });
 
 
@@ -119,23 +131,24 @@ gulp.task('img', function () {
 
 // Build for dev and prod
 // ----------------------------------------------------------------------------
-gulp.task('dev', ['templates', 'css', 'js']);
+gulp.task('dev', ['slim', 'sass', 'coffee']);
 
-gulp.task('prod', ['templates', 'css', 'uncss', 'js', 'img']);
+gulp.task('prod', ['slim', 'sass', 'uncss', 'coffee', 'img']);
 
 
 // Watch
 // ----------------------------------------------------------------------------
 gulp.task('watch', ['dev'], function () {
   browserSync.init({
-    server: build
+    server: build,
+    scrollProportionally: true
   })
-  gulp.watch(source + '/**/*.jade', ['templates']);
-  gulp.watch(source + '/**/*.scss', ['css']);
-  gulp.watch(source + '/**/*.js', ['js']);
+  gulp.watch(source + '/**/*.slim', ['slim']);
+  gulp.watch(source + '/**/*.sass', ['sass']);
+  gulp.watch(source + '/**/*.coffee', ['coffee']);
   gulp.watch(build  + '/**/*.html').on('change', reload);
 });
 
 // Default
 // ----------------------------------------------------------------------------
-gulp.task('default', ['watch'])
+gulp.task('server', ['watch'])
