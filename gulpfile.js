@@ -151,4 +151,4 @@ gulp.task('watch', ['dev'], function () {
 
 // Default
 // ----------------------------------------------------------------------------
-gulp.task('server', ['watch'])
+gulp.task('default', ['watch'])
