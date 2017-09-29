@@ -1,24 +1,10 @@
 // Require
 // ----------------------------------------------------------------------------
-var autoprefixer  = require('gulp-autoprefixer'),
-    browserSync   = require('browser-sync'),
-    concat        = require('gulp-concat'),
-    critical      = require('critical'),
-    gulp          = require('gulp'),
-    imagemin      = require('gulp-imagemin'),
-    slim          = require('gulp-slim'),
-    coffee        = require('gulp-coffee'),
-    minifyCss     = require('gulp-minify-css'),
-    minifyHtml    = require('gulp-minify-html')
-    notify        = require('gulp-notify'),
-    path          = require('path'),
-    reload        = browserSync.reload,
-    rename        = require('gulp-rename'),
-    rimraf        = require('gulp-rimraf'),
-    sass          = require('gulp-sass'),
-    uglify        = require('gulp-uglify'),
-    uncss         = require('gulp-uncss');
-    include       = require("gulp-include"); // allow 'require' word on files
+var gulp    = require('gulp'),
+    plugins = require('gulp-load-plugins')({
+        pattern: '*'
+    }),
+    reload  = plugins.browserSync.reload
 
 // Paths
 // ----------------------------------------------------------------------------
@@ -46,14 +32,14 @@ var bower_build    = './build/bower_components',
 // ------------------------------------
 gulp.task('slim', function () {
   return gulp.src(source + '/**/*.slim')
-    .pipe(slim({
+    .pipe(plugins.slim({
       pretty: false,
       include: true
     }))
-    .pipe(minifyHtml())
+    .pipe(plugins.minifyHtml())
     .pipe(gulp.dest(build)) // mettre ici le chemin de placement des html
     .pipe(reload({stream:true}))
-    .pipe(notify('Slim compilation completed !'));
+    .pipe(plugins.notify('Slim compilation completed !'));
 });
 
 
@@ -61,16 +47,16 @@ gulp.task('slim', function () {
 // ------------------------------------
 gulp.task('sass', function () {
   return gulp.src(sass_source + '/main.sass')
-    .pipe(sass())
-    .pipe(sass.sync().on('error', sass.logError))
-    .pipe(autoprefixer({
+    .pipe(plugins.sass())
+    .pipe(plugins.sass.sync().on('error', plugins.sass.logError))
+    .pipe(plugins.autoprefixer({
       browsers: ['last 2 versions'],
       cascade: false
     }))
-    .pipe(minifyCss())
+    .pipe(plugins.minifyCss())
     .pipe(gulp.dest(sass_build))
     .pipe(reload({stream:true}))
-    .pipe(notify('Sass compilation completed !'));
+    .pipe(plugins.notify('Sass compilation completed !'));
 });
 
 
@@ -78,12 +64,12 @@ gulp.task('sass', function () {
 // ------------------------------------
 gulp.task('uncss', function () {
   return gulp.src(sass_build + '/app.css')
-   .pipe(uncss({
+   .pipe(plugins.uncss({
       html: [build + '/**/*.html']
    }))
-   .pipe(minifyCss())
+   .pipe(plugins.minifyCss())
    .pipe(gulp.dest(sass_build))
-   .pipe(notify('Unused CSS removed !'));
+   .pipe(plugins.notify('Unused CSS removed !'));
 });
 
 
@@ -92,10 +78,10 @@ gulp.task('uncss', function () {
 gulp.task('coffee', function() {
   gulp.src(coffee_source + '/*.coffee')
 
-    .pipe(coffee())
+    .pipe(plugins.coffee())
     .pipe(gulp.dest(coffee_build))
-    .pipe(rename('all.min.js'))
-    .pipe(uglify())
+    .pipe(plugins.rename('all.min.js'))
+    .pipe(plugins.uglify())
     .pipe(gulp.dest('coffee_build'));
 
     // .pipe(include({ extensions: "coffee" }))
@@ -116,17 +102,17 @@ gulp.task('coffee', function() {
 // ------------------------------------
 gulp.task('img', function () {
   return gulp.src(img_source + '/**/*.{png,jpg,jpeg,gif,svg}')
-    .pipe(imagemin())
+    .pipe(plugins.imagemin())
     .pipe(gulp.dest(img_build))
-    .pipe(notify('Images are optimized!'));
+    .pipe(plugins.notify('Images are optimized!'));
 });
 
 // Clean build folder
 // ------------------------------------
 gulp.task('clean', function () {
   return gulp.src(build, { read: false})
-    .pipe(rimraf())
-    .pipe(notify('Prod folder deleted !'));
+    .pipe(plugins.rimraf())
+    .pipe(plugins.notify('Prod folder deleted !'));
 });
 
 // Build for dev and prod
@@ -139,7 +125,7 @@ gulp.task('prod', ['slim', 'sass', 'uncss', 'coffee', 'img']);
 // Watch
 // ----------------------------------------------------------------------------
 gulp.task('watch', ['dev'], function () {
-  browserSync.init({
+  plugins.browserSync.init({
     server: build,
     scrollProportionally: true
   })
