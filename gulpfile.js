@@ -6,6 +6,7 @@ var gulp    = require('gulp'),
     }),
     reload  = plugins.browserSync.reload
 
+
 // Paths
 // ----------------------------------------------------------------------------
 
@@ -46,9 +47,14 @@ gulp.task('slim', function () {
 // Compile SASS + autoprefixer
 // ------------------------------------
 gulp.task('sass', function () {
-  return gulp.src(sass_source + '/main.sass')
+  return gulp.src(sass_source + '/main.sass', { sourcemaps: true })
+    .pipe(plugins.plumber({ errorHandler: function(err) {
+      plugins.notify.onError({
+          title: "Gulp error in " + err.plugin,
+          message:  err.toString()
+      })(err);
+    }}))
     .pipe(plugins.sass())
-    .pipe(plugins.sass.sync().on('error', plugins.sass.logError))
     .pipe(plugins.autoprefixer({
       browsers: ['last 2 versions'],
       cascade: false
@@ -57,19 +63,6 @@ gulp.task('sass', function () {
     .pipe(gulp.dest(sass_build))
     .pipe(reload({stream:true}))
     .pipe(plugins.notify('Sass compilation completed !'));
-});
-
-
-// Remove unused css
-// ------------------------------------
-gulp.task('uncss', function () {
-  return gulp.src(sass_build + '/app.css')
-   .pipe(plugins.uncss({
-      html: [build + '/**/*.html']
-   }))
-   .pipe(plugins.minifyCss())
-   .pipe(gulp.dest(sass_build))
-   .pipe(plugins.notify('Unused CSS removed !'));
 });
 
 
@@ -98,6 +91,19 @@ gulp.task('coffee', function() {
 });
 
 
+// Remove unused css
+// ------------------------------------
+gulp.task('uncss', function () {
+  return gulp.src(sass_build + '/app.css')
+   .pipe(plugins.uncss({
+      html: [build + '/**/*.html']
+   }))
+   .pipe(plugins.minifyCss())
+   .pipe(gulp.dest(sass_build))
+   .pipe(plugins.notify('Unused CSS removed !'));
+});
+
+
 // Optimize images
 // ------------------------------------
 gulp.task('img', function () {
@@ -107,6 +113,7 @@ gulp.task('img', function () {
     .pipe(plugins.notify('Images are optimized!'));
 });
 
+
 // Clean build folder
 // ------------------------------------
 gulp.task('clean', function () {
@@ -114,6 +121,7 @@ gulp.task('clean', function () {
     .pipe(plugins.rimraf())
     .pipe(plugins.notify('Prod folder deleted !'));
 });
+
 
 // Build for dev and prod
 // ----------------------------------------------------------------------------
