@@ -41,14 +41,6 @@ var bower_build    = './build/bower_components',
 // Tasks
 // ----------------------------------------------------------------------------
 
-// Clean build folder
-// ------------------------------------
-gulp.task('clean', function () {
-  return gulp.src(build, { read: false})
-    .pipe(rimraf())
-    .pipe(notify('Prod folder deleted !'));
-});
-
 
 // Compile slim files to minified html
 // ------------------------------------
@@ -127,6 +119,14 @@ gulp.task('img', function () {
     .pipe(imagemin())
     .pipe(gulp.dest(img_build))
     .pipe(notify('Images are optimized!'));
+});
+
+// Clean build folder
+// ------------------------------------
+gulp.task('clean', function () {
+  return gulp.src(build, { read: false})
+    .pipe(rimraf())
+    .pipe(notify('Prod folder deleted !'));
 });
 
 // Build for dev and prod
