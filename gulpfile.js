@@ -33,6 +33,12 @@ var bower_build    = './build/bower_components',
 // ------------------------------------
 gulp.task('slim', function () {
   return gulp.src(source + '/**/*.slim')
+    .pipe(plugins.plumber({ errorHandler: function(err) {
+      plugins.notify.onError({
+          title: "Gulp error in " + err.plugin,
+          message:  err.toString()
+      })(err);
+    }}))
     .pipe(plugins.slim({
       pretty: false,
       include: true
@@ -47,7 +53,7 @@ gulp.task('slim', function () {
 // Compile SASS + autoprefixer
 // ------------------------------------
 gulp.task('sass', function () {
-  return gulp.src(sass_source + '/main.sass', { sourcemaps: true })
+  return gulp.src(sass_source + '/main.sass')
     .pipe(plugins.plumber({ errorHandler: function(err) {
       plugins.notify.onError({
           title: "Gulp error in " + err.plugin,
@@ -135,7 +141,8 @@ gulp.task('prod', ['slim', 'sass', 'uncss', 'coffee', 'img']);
 gulp.task('watch', ['dev'], function () {
   plugins.browserSync.init({
     server: build,
-    scrollProportionally: true
+    scrollProportionally: true,
+    notify: false
   })
   gulp.watch(source + '/**/*.slim', ['slim']);
   gulp.watch(source + '/**/*.sass', ['sass']);
