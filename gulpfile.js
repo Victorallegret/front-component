@@ -131,6 +131,8 @@ gulp.task('clean', function () {
 
 // Build for dev and prod
 // ----------------------------------------------------------------------------
+gulp.task('dev', ['slim', 'sass', 'coffee']);
+
 gulp.task('prod', ['slim', 'sass', 'uncss', 'coffee', 'img']);
 
 
