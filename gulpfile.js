@@ -1,5 +1,19 @@
-// Require
-// ----------------------------------------------------------------------------
+// GULP TEMPLATE - Gulfile.js - Victor Allegret
+//
+//   - $ gulp
+//   - $ gulp build
+//   - $ gulp clean
+//
+// --------------------------------------------------------
+
+////////////////////
+// VARIABLES
+////////////////////////////////////////////////////////////////////////////////
+
+
+// REQUIRE
+// ---------------------------------------------------------
+
 var gulp    = require('gulp'),
     plugins = require('gulp-load-plugins')({
         pattern: '*'
@@ -7,149 +21,197 @@ var gulp    = require('gulp'),
     reload  = plugins.browserSync.reload
 
 
-// Paths
-// ----------------------------------------------------------------------------
+// PATH
+// ---------------------------------------------------------
 
-// Paths for source
-var bower_source   = './source/bower_components',
-    sass_source    = './source/assets/stylesheets/',
-    img_source     = './source/assets/images/',
-    coffee_source  = './source/assets/javascripts',
-    source         = './source';
+///// PATHS FOR DEV
+var slim_dev    = './dev/views/',
+    sass_dev    = './dev/assets/stylesheets/',
+    coffee_dev  = './dev/assets/javascripts/',
+    fonts_dev   = './dev/assets/fonts/',
+    img_dev     = './dev/assets/images/',
+    dev         = './dev';
 
-// Paths for build
-var bower_build    = './build/bower_components',
+///// PATH FOR PROD
+var slim_build     = './build/views/',
     sass_build     = './build/assets/stylesheets/',
-    img_build      = './build/assets/images/',
     coffee_build   = './build/assets/javascripts/',
+    fonts_build    = './build/assets/fonts/',
+    img_build      = './build/assets/images/',
     build          = './build';
 
 
-// Tasks
-// ----------------------------------------------------------------------------
 
 
-// Compile slim files to minified html
-// ------------------------------------
+
+////////////////////
+// TASKS
+////////////////////////////////////////////////////////////////////////////////
+
+
+// COMPILE SLIM TO HTML
+// ---------------------------------------------------------
 gulp.task('slim', function () {
-  return gulp.src(source + '/**/*.slim')
+  return gulp.src(slim_dev + '/**/*.slim')
+    // prevent server from crashing
     .pipe(plugins.plumber({ errorHandler: function(err) {
       plugins.notify.onError({
-          title: "Gulp error in " + err.plugin,
-          message:  err.toString()
+          title: "Gulp error in " + err.plugin
       })(err);
     }}))
+    // compile slim to html
     .pipe(plugins.slim({
       pretty: false,
       include: true
     }))
+    // minify html
     .pipe(plugins.minifyHtml())
-    .pipe(gulp.dest(build)) // mettre ici le chemin de placement des html
+    // copy result to build folder
+    .pipe(gulp.dest(slim_build))
+    // reload server on slim save
     .pipe(reload({stream:true}))
+    // notify when task completed
     .pipe(plugins.notify('Slim compilation completed !'));
 });
 
 
-// Compile SASS + autoprefixer
-// ------------------------------------
+// COMPILE SASS TO CSS
+// ---------------------------------------------------------
 gulp.task('sass', function () {
-  return gulp.src(sass_source + '/main.sass')
+  return gulp.src(sass_dev + '/**/*.{sass,css,scss}')
+    // prevent server from crashing
     .pipe(plugins.plumber({ errorHandler: function(err) {
       plugins.notify.onError({
           title: "Gulp error in " + err.plugin,
-          message:  err.toString()
       })(err);
     }}))
+    // compile sass to css
     .pipe(plugins.sass())
+    // add auto-prefixes
     .pipe(plugins.autoprefixer({
       browsers: ['last 2 versions'],
       cascade: false
     }))
+    // concat all files
+    .pipe(plugins.concat('main.css'))
+    // rename to .min
+    .pipe(plugins.rename('main.min.css'))
+    // minify css
     .pipe(plugins.minifyCss())
+    // copy result to build folder
     .pipe(gulp.dest(sass_build))
+    // reload on sass save
     .pipe(reload({stream:true}))
+    // notify when task completed
     .pipe(plugins.notify('Sass compilation completed !'));
 });
 
 
-// Concatenate and minify coffee
-// ------------------------------------
+// COMPILE COFFEE TO JS
+// ---------------------------------------------------------
 gulp.task('coffee', function() {
-  gulp.src(coffee_source + '/*.coffee')
-
+  return gulp.src(coffee_dev + '/**/*.coffee')
+    // compile coffee to js
     .pipe(plugins.coffee())
-    .pipe(gulp.dest(coffee_build))
+    // concat all files
+    .pipe(plugins.concat('all.js'))
+    // rename to .min
     .pipe(plugins.rename('all.min.js'))
+    // minify js
     .pipe(plugins.uglify())
-    .pipe(gulp.dest('coffee_build'));
-
-    // .pipe(include({ extensions: "coffee" }))
-    // .pipe(coffee({bare: true}))
-    // .pipe(include({ extensions: "js" }))
-    // .pipe(gulp.dest(coffee_build))
-    // .pipe(concat('all.js'))
-    // .pipe(gulp.dest(coffee_build))
-    // .pipe(rename('all.min.js'))
-    // .pipe(uglify())
-    // .pipe(gulp.dest(coffee_build))
-    // .pipe(reload({stream:true}))
-    // .pipe(notify('Coffee compilation completed !'));
+    // copy result to build folder
+    .pipe(gulp.dest(coffee_build))
+    // notify when task completed
+    .pipe(plugins.notify('Coffee compilation completed !'));
 });
 
 
-// Remove unused css
-// ------------------------------------
+// FONTS
+// ---------------------------------------------------------
+gulp.task('fonts', function() {
+  return gulp.src(fonts_dev + '/**/*.{eot,svg,ttf,woff}')
+    // copy result to build folder
+    .pipe(gulp.dest(fonts_build))
+});
+
+
+// REMOVE UNUSED CSS
+// ---------------------------------------------------------
 gulp.task('uncss', function () {
   return gulp.src(sass_build + '/app.css')
+  // remove unused css
    .pipe(plugins.uncss({
       html: [build + '/**/*.html']
    }))
+   // minify css
    .pipe(plugins.minifyCss())
+   // copy result to build folder
    .pipe(gulp.dest(sass_build))
+   // notify when task completed
    .pipe(plugins.notify('Unused CSS removed !'));
 });
 
 
-// Optimize images
-// ------------------------------------
+// MINIFY IMAGES
+// ---------------------------------------------------------
 gulp.task('img', function () {
-  return gulp.src(img_source + '/**/*.{png,jpg,jpeg,gif,svg}')
+  return gulp.src(img_dev + '/**/*.{png,jpg,jpeg,gif,svg}')
+    // minify images
     .pipe(plugins.imagemin())
+    // copy result to build folder
     .pipe(gulp.dest(img_build))
+    // notify when task completed
     .pipe(plugins.notify('Images are optimized!'));
 });
 
 
-// Clean build folder
-// ------------------------------------
-gulp.task('clean', function () {
+// REMOVE BUILD FOLDER
+// ---------------------------------------------------------
+gulp.task('removeBuild', function () {
   return gulp.src(build, { read: false})
     .pipe(plugins.rimraf())
     .pipe(plugins.notify('Prod folder deleted !'));
 });
 
 
-// Build for dev and prod
-// ----------------------------------------------------------------------------
-gulp.task('dev', ['slim', 'sass', 'coffee']);
-
-gulp.task('prod', ['slim', 'sass', 'uncss', 'coffee', 'img']);
 
 
-// Watch
-// ----------------------------------------------------------------------------
+
+////////////////////
+// COMMANDS
+////////////////////////////////////////////////////////////////////////////////
+
+
+// RUN SLIM | SASS | COFFEE ($ gulp dev)
+// ---------------------------------------------------------
+gulp.task('dev', ['slim', 'sass', 'coffee', 'fonts']);
+
+
+// RUN SLIM | SASS | COFFEE | UNCSS | IMG ($ gulp build)
+// ---------------------------------------------------------
+gulp.task('build', ['slim', 'sass', 'coffee', 'fonts', 'uncss', 'img']);
+
+
+// RUN CLEAN ($ gulp clean)
+// ---------------------------------------------------------
+gulp.task('clean', ['removeBuild']);
+
+
+// RUN SERVER ($ gulp)
+// ---------------------------------------------------------
+
+///// WATCH
 gulp.task('watch', ['dev'], function () {
   plugins.browserSync.init({
     server: build,
     scrollProportionally: true,
     notify: false
   })
-  gulp.watch(source + '/**/*.slim', ['slim']);
-  gulp.watch(source + '/**/*.sass', ['sass']);
-  gulp.watch(source + '/**/*.coffee', ['coffee']);
+  gulp.watch(dev + '/**/*.slim', ['slim']);
+  gulp.watch(dev + '/**/*.sass', ['sass']);
+  gulp.watch(dev + '/**/*.coffee', ['coffee']);
   gulp.watch(build  + '/**/*.html').on('change', reload);
 });
 
-// Default
-// ----------------------------------------------------------------------------
+////// COMMAND
 gulp.task('default', ['watch'])
