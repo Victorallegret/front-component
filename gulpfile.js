@@ -203,7 +203,10 @@ gulp.task('clean', ['removeBuild']);
 ///// WATCH
 gulp.task('watch', ['dev'], function () {
   plugins.browserSync.init({
-    server: build,
+    server: {
+      baseDir: slim_build,
+      index: "index.html"
+    },
     scrollProportionally: true,
     notify: false
   })
