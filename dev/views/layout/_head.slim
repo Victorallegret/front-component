@@ -1,44 +1,36 @@
 // GULP TEMPLATE - VIEWS LAYOUT head.slim - Victor Allegret
 // --------------------------------------------------------
 
-////////////////////
-/! DOCTYPE
-////////////////////////////////////////////////////////////////////////////////
-doctype html
-html lang="fr"
+// HEAD
+// ---------------------------------------------------------
+head
+
+
+  ///// TITLE
+  title = "Gulp Template"
+
+
+  ///// META SEO
+  meta name="description" content="Gulp blank template with browser-sync, sass, slim & coffee"
+  meta name="author" content="Victor Allegret, creative front-ender"
+  meta http-equiv="content-type" content="text/html;charset=UTF-8"
+  meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"
+  meta name="viewport" content="width=device-width, initial-scale=1.0"
+
+
+  /// FONTS
+  link href="https://fonts.googleapis.com/css?family=Lato:300,400,500,600,700" rel="stylesheet"
+
+
+  /// CSS
+  link href="../assets/stylesheets/main.min.css" rel="stylesheet"
+
+
+  /// JAVASCRIPT
+  script src="assets/javascripts/all.min.js" type="text/javascript"
 
 
 
-  // HEAD
-  // ---------------------------------------------------------
-  head
-
-
-    ///// TITLE
-    title = "Gulp Template"
-
-
-    ///// META SEO
-    meta name="description" content="Gulp blank template with browser-sync, sass, slim & coffee"
-    meta name="author" content="Victor Allegret, creative front-ender"
-    meta http-equiv="content-type" content="text/html;charset=UTF-8"
-    meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"
-    meta name="viewport" content="width=device-width, initial-scale=1.0"
-
-
-    /// FONTS
-    link href="https://fonts.googleapis.com/css?family=Lato:300,400,500,600,700" rel="stylesheet"
-
-
-    /// CSS
-    link href="../assets/stylesheets/main.min.css" rel="stylesheet"
-
-
-    /// JAVASCRIPT
-    script src="assets/javascripts/all.min.js" type="text/javascript"
-
-
-
-  // BODY
-  // ---------------------------------------------------------
-  body
+// BODY
+// ---------------------------------------------------------
+body
