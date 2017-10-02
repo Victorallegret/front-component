@@ -19,6 +19,7 @@ var gulp    = require('gulp'),
         pattern: '*'
     }),
     reload  = plugins.browserSync.reload
+    stream = plugins.browserSync.stream
 
 
 // PATH
@@ -69,7 +70,7 @@ gulp.task('slim', function () {
     // copy result to build folder
     .pipe(gulp.dest(slim_build))
     // reload server on slim save
-    .pipe(reload({stream:true}))
+    .pipe(stream({once:true}))
     // notify when task completed
     .pipe(plugins.notify('Slim compilation completed !'));
 });
@@ -101,7 +102,7 @@ gulp.task('sass', function () {
     // copy result to build folder
     .pipe(gulp.dest(sass_build))
     // reload on sass save
-    .pipe(reload({stream:true}))
+    .pipe(stream({once:true}))
     // notify when task completed
     .pipe(plugins.notify('Sass compilation completed !'));
 });
@@ -213,7 +214,7 @@ gulp.task('watch', ['dev'], function () {
   gulp.watch(dev + '/**/*.slim', ['slim']);
   gulp.watch(dev + '/**/*.sass', ['sass']);
   gulp.watch(dev + '/**/*.coffee', ['coffee']);
-  gulp.watch(build  + '/**/*.html').on('change', reload);
+  gulp.watch(build  + '/**/*.html').on('change', stream);
 });
 
 ////// COMMAND
