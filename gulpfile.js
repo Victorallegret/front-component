@@ -66,11 +66,11 @@ gulp.task('slim', function () {
       include: true
     }))
 
-    .pipe(plugins.newer(build))
+    .pipe(plugins.newer(slim_build))
     // minify html
     .pipe(plugins.minifyHtml())
     // copy result to build folder
-    .pipe(gulp.dest(build))
+    .pipe(gulp.dest(slim_build))
     // reload server on slim save
     .pipe(stream({once:true}))
     // notify when task completed
@@ -207,7 +207,7 @@ gulp.task('clean', ['removeBuild']);
 gulp.task('watch', ['dev'], function () {
   plugins.browserSync.init({
     server: {
-      baseDir: build,
+      baseDir: slim_build,
       index: "/index.html"
     },
     scrollProportionally: true,
