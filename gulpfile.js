@@ -66,7 +66,7 @@ gulp.task('slim', function () {
       include: true
     }))
 
-    .pipe(plugins.newer(slim_build))
+    .pipe(plugins.newer('build/views/'))
     // minify html
     .pipe(plugins.minifyHtml())
     // copy result to build folder
