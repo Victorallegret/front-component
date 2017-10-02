@@ -53,7 +53,7 @@ var slim_build     = './build/views/',
 // COMPILE SLIM TO HTML
 // ---------------------------------------------------------
 gulp.task('slim', function () {
-  return gulp.src(slim_dev + '/**/*.slim')
+  return gulp.src(slim_dev + '/*.slim')
     // prevent server from crashing
     .pipe(plugins.plumber({ errorHandler: function(err) {
       plugins.notify.onError({
@@ -66,7 +66,7 @@ gulp.task('slim', function () {
       include: true
     }))
 
-    .pipe(plugins.newer('build/views/'))
+    .pipe(plugins.newer(slim_build))
     // minify html
     .pipe(plugins.minifyHtml())
     // copy result to build folder
@@ -81,7 +81,7 @@ gulp.task('slim', function () {
 // COMPILE SASS TO CSS
 // ---------------------------------------------------------
 gulp.task('sass', function () {
-  return gulp.src(sass_dev + '/**/*.{sass,css,scss}')
+  return gulp.src(sass_dev + '/main.sass')
     // prevent server from crashing
     .pipe(plugins.plumber({ errorHandler: function(err) {
       plugins.notify.onError({
@@ -104,7 +104,7 @@ gulp.task('sass', function () {
     // copy result to build folder
     .pipe(gulp.dest(sass_build))
     // reload on sass save
-    .pipe(stream({once:true}))
+    .pipe(reload({stream:true}))
     // notify when task completed
     .pipe(plugins.notify('Sass compilation completed !'));
 });
@@ -207,8 +207,8 @@ gulp.task('clean', ['removeBuild']);
 gulp.task('watch', ['dev'], function () {
   plugins.browserSync.init({
     server: {
-      baseDir: slim_build,
-      index: "/index.html"
+      baseDir: build,
+      index: "views/index.html"
     },
     scrollProportionally: true,
     notify: false
