@@ -67,7 +67,7 @@ gulp.task('slim', function () {
       pretty: false,
       include: true
     }))
-
+    // run task only for updated files
     .pipe(plugins.newer(build))
     // minify html
     .pipe(plugins.minifyHtml())
@@ -85,13 +85,15 @@ gulp.task('slim', function () {
 // COMPILE SASS TO CSS
 // ---------------------------------------------------------
 gulp.task('sass', function () {
-  return gulp.src(sass_dev + '/main.sass')
+  return gulp.src(sass_dev + '/**/*.sass')
     // prevent server from crashing
     .pipe(plugins.plumber({ errorHandler: function(err) {
       plugins.notify.onError({
           title: "Gulp error in " + err.plugin,
       })(err);
     }}))
+    // add sass glob import
+    .pipe(plugins.sassGlob())
     // compile sass to css
     .pipe(plugins.sass())
     // add auto-prefixes
