@@ -55,7 +55,7 @@ var slim_build     = './build/views/',
 // COMPILE SLIM TO HTML
 // ---------------------------------------------------------
 gulp.task('slim', function () {
-  return gulp.src(slim_dev + '/*.slim')
+  return gulp.src([slim_dev + '/**/*.slim', '!./dev/views/partials/**/*.slim', '!./dev/views/layout/**/*.slim'])
     // prevent server from crashing
     .pipe(plugins.plumber({ errorHandler: function(err) {
       plugins.notify.onError({
@@ -68,11 +68,13 @@ gulp.task('slim', function () {
       include: true
     }))
 
-    .pipe(plugins.newer(slim_build))
+    .pipe(plugins.newer(build))
     // minify html
     .pipe(plugins.minifyHtml())
+    // remove all folder
+    .pipe(plugins.rename({dirname: ''}))
     // copy result to build folder
-    .pipe(gulp.dest(slim_build))
+    .pipe(gulp.dest(build))
     // reload server on slim save
     .pipe(stream({once:true}))
     // notify when task completed
@@ -210,7 +212,7 @@ gulp.task('watch', ['dev'], function () {
   plugins.browserSync.init({
     server: {
       baseDir: build,
-      index: "views/index.html"
+      index: "index.html"
     },
     scrollProportionally: true,
     notify: false
