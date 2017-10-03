@@ -164,7 +164,9 @@ gulp.task('uncss', function () {
 // MINIFY IMAGES
 // ---------------------------------------------------------
 gulp.task('img', function () {
-  return gulp.src(img_dev + '/**/*.{png,jpg,jpeg,gif,svg}')
+  return gulp.src(img_dev + '/**/*.{png,jpg,jpeg,gif,svg,ico}')
+    // run task only for updated files
+    .pipe(plugins.newer(img_build))
     // minify images
     .pipe(plugins.imagemin())
     // copy result to build folder
@@ -193,7 +195,7 @@ gulp.task('removeBuild', function () {
 
 // RUN SLIM | SASS | COFFEE ($ gulp dev)
 // ---------------------------------------------------------
-gulp.task('dev', ['slim', 'sass', 'coffee', 'fonts']);
+gulp.task('dev', ['slim', 'sass', 'coffee']);
 
 
 // RUN SLIM | SASS | COFFEE | UNCSS | IMG ($ gulp build)
