@@ -18,7 +18,9 @@ var gulp    = require('gulp'),
     plugins = require('gulp-load-plugins')({
         pattern: '*'
     }),
+    // reload auto for Browser Sync
     reload  = plugins.browserSync.reload
+    // reload once for Browser Sync
     stream = plugins.browserSync.stream
 
 
