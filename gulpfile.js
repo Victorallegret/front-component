@@ -138,7 +138,9 @@ gulp.task('coffee', function() {
 // FONTS
 // ---------------------------------------------------------
 gulp.task('fonts', function() {
-  return gulp.src(fonts_dev + '/**/*.{eot,svg,ttf,woff}')
+  return gulp.src(fonts_dev + '/**/*.{eot,svg,ttf,woff,woff2}')
+    // remove under-folder
+    .pipe(plugins.rename({dirname: ''}))
     // copy result to build folder
     .pipe(gulp.dest(fonts_build))
 });
