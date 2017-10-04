@@ -216,6 +216,7 @@ gulp.task('clean', ['removeBuild']);
 ///// WATCH
 gulp.task('watch', ['dev'], function () {
   plugins.browserSync.init({
+    port: 3000,
     server: {
       baseDir: build,
       index: "index.html"
