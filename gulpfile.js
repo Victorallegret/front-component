@@ -124,11 +124,20 @@ gulp.task('sass', function () {
 // COMPILE COFFEE TO JS
 // ---------------------------------------------------------
 gulp.task('coffee', function() {
-  return gulp.src(coffee_dev + '/**/*.{coffee,js}')
+  return gulp.src(coffee_dev + '/main.coffee')
+    // prevent server from crashing
+    .pipe(plugins.plumber({ errorHandler: function(err) {
+      plugins.notify.onError({
+          title: "Gulp error in " + err.plugin,
+      })(err);
+    }}))
+    // select coffee files
+    .pipe(plugins.include({ extensions: "coffee" }))
     // compile coffee to js
     .pipe(plugins.coffee())
-    // Remove unfolder
-    .pipe(plugins.rename({dirname: ''}))
+    // select js files
+    .pipe(plugins.include({ extensions: "js" }))
+    .pipe(plugins.newer(coffee_build + '/all.js'))
     // concat all files
     .pipe(plugins.concat('all.js'))
     // rename to .min
@@ -137,6 +146,8 @@ gulp.task('coffee', function() {
     .pipe(plugins.uglify())
     // copy result to build folder
     .pipe(gulp.dest(coffee_build))
+    // reload on coffee save
+    .pipe(reload({stream:true}))
     // notify when task completed
     .pipe(plugins.notify('Coffee compilation completed !'));
 });
