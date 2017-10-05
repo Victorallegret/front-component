@@ -11,6 +11,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
+
 // REQUIRE
 // ---------------------------------------------------------
 
@@ -22,6 +23,7 @@ var gulp    = require('gulp'),
     reload  = plugins.browserSync.reload
     // reload once for Browser Sync
     stream = plugins.browserSync.stream
+
 
 
 // PATH
@@ -52,6 +54,7 @@ var slim_build     = './build/views/',
 ////////////////////////////////////////////////////////////////////////////////
 
 
+
 // COMPILE SLIM TO HTML
 // ---------------------------------------------------------
 gulp.task('slim', function () {
@@ -80,6 +83,7 @@ gulp.task('slim', function () {
     // notify when task completed
     .pipe(plugins.notify('Slim compilation completed !'));
 });
+
 
 
 // COMPILE SASS TO CSS
@@ -116,12 +120,15 @@ gulp.task('sass', function () {
 });
 
 
+
 // COMPILE COFFEE TO JS
 // ---------------------------------------------------------
 gulp.task('coffee', function() {
-  return gulp.src(coffee_dev + '/**/*.coffee')
+  return gulp.src(coffee_dev + '/**/*.{coffee,js}')
     // compile coffee to js
     .pipe(plugins.coffee())
+    // Remove unfolder
+    .pipe(plugins.rename({dirname: ''}))
     // concat all files
     .pipe(plugins.concat('all.js'))
     // rename to .min
@@ -135,6 +142,19 @@ gulp.task('coffee', function() {
 });
 
 
+
+// COPY JS VENDORS
+// ---------------------------------------------------------
+// gulp.task('jsVendors', function() {
+//   return gulp.src('./dev/assets/javascripts/vendors/**/*.js')
+//     // copy result to build folder
+//     .pipe(gulp.dest(coffee_build))
+//     // notify when task completed
+//     .pipe(plugins.notify('Javascript vendors injected !'));
+// });
+
+
+
 // FONTS
 // ---------------------------------------------------------
 gulp.task('fonts', function() {
@@ -144,6 +164,7 @@ gulp.task('fonts', function() {
     // copy result to build folder
     .pipe(gulp.dest(fonts_build))
 });
+
 
 
 // REMOVE UNUSED CSS
@@ -163,6 +184,7 @@ gulp.task('uncss', function () {
 });
 
 
+
 // MINIFY IMAGES
 // ---------------------------------------------------------
 gulp.task('img', function () {
@@ -176,6 +198,7 @@ gulp.task('img', function () {
     // notify when task completed
     .pipe(plugins.notify('Images are optimized!'));
 });
+
 
 
 // REMOVE BUILD FOLDER
@@ -195,9 +218,11 @@ gulp.task('removeBuild', function () {
 ////////////////////////////////////////////////////////////////////////////////
 
 
+
 // RUN SLIM | SASS | COFFEE ($ gulp dev)
 // ---------------------------------------------------------
 gulp.task('dev', ['slim', 'sass', 'coffee']);
+
 
 
 // RUN SLIM | SASS | COFFEE | UNCSS | IMG ($ gulp build)
@@ -205,9 +230,11 @@ gulp.task('dev', ['slim', 'sass', 'coffee']);
 gulp.task('build', ['slim', 'sass', 'coffee', 'fonts', 'uncss', 'img']);
 
 
+
 // RUN CLEAN ($ gulp clean)
 // ---------------------------------------------------------
 gulp.task('clean', ['removeBuild']);
+
 
 
 // RUN SERVER ($ gulp)
