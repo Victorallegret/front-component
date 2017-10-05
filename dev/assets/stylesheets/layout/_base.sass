@@ -1,2 +1,38 @@
 // GULP TEMPLATE - LAYOUT base.sass - Victor Allegret
 // --------------------------------------------------------
+
+// LAYOUT BASE
+// ---------------------------------------------------------
+body, html
+  width: 100%
+
+
+html
+  font-size: 62.5% // 1rem = 10px
+
+
+body
+  background-color: $white
+  color: $gray-light
+  font-size: $text-font-size
+  font-family: $font-family-sans-serif
+  line-height: 1.7
+
+  //// fix glitter font-weight issue
+  -webkit-font-smoothing: antialiased
+  -moz-osx-font-smoothing: grayscale
+
+
+input
+  font-size: $text-font-size
+  font-family: $font-family-sans-serif
+
+
+
+
+
+// LINKS
+// ---------------------------------------------------------
+a:hover, a:focus
+  text-decoration: none
+  outline: none
