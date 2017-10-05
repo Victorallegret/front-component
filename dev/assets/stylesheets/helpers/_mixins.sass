@@ -1,2 +1,123 @@
 // GULP TEMPLATE - HELPERS mixins.sass Victor Allegret
 // --------------------------------------------------------
+
+//Usage :
+// @include placeholder // or +placeholder
+//    css rule 1
+//    css rule 2
+//    ...
+// Add auto-prefixes for input placeholder
+@mixin placeholder()
+  &::-webkit-input-placeholder
+    @content
+
+  &:-moz-placeholder
+    @content
+
+  &::-moz-placeholder
+    @content
+
+  &:-ms-input-placeholder
+    @content
+
+
+
+
+
+// Usage :  class-begin(cssBeginClass).
+//          #{class-begin(cssBeginClass)} si on veut écrire des caractéristiques dedans
+// Arguments: cssBeginClass: le début de la classe css que l'on veut cibler
+// Retourne [class^="cssBeginClass"], [class*=" cssBeginClass"]
+// (utile par exemple pour cibler les colonnes bootstrap quelque soit leur taille, ou les icones générés par une font icon)
+// cf http://stackoverflow.com/questions/9083614/sass-multiple-class-selector-from-a-variable
+@function class-begin($value)
+  $list: '[class^="#{$value}"]', '[class*=" #{$value}"]'
+  $glue: ', '
+  $string: ""
+  @each $item in $list
+    @if $string != ""
+      $string: $string + $glue
+    $string: $string + $item
+  @return $string
+
+
+
+
+
+////////////////////
+// GENERATE SPECIAL CLASSES
+////////////////////////////////////////////////////////////////////////////////
+
+// Usage : @include createMargin($min, $max)
+// $min : taille min de la marge (en px), $max : taille max de la marge (en px)
+// Crée des classes .m-X, .mt-X, .mr-X, .mb-X, .ml-X pour générer des marges automatiquement (/! taille en px)
+@mixin createMargin($min, $max)
+  @for $i from $min to $max+1
+    .m-#{$i}
+      margin : 0.1rem * $i
+
+    .m-t-#{$i}
+      margin-top: 0.1rem * $i
+
+    .m-l-#{$i}
+      margin-left : 0.1rem * $i
+
+    .m-r-#{$i}
+      margin-right: 0.1rem * $i
+
+    .m-b-#{$i}
+      margin-bottom: 0.1rem * $i
+
+    .m-i-#{$i}
+      margin : 0.1rem * $i !important
+
+    .m-t-i-#{$i}
+      margin-top: 0.1rem * $i !important
+
+    .m-l-i-#{$i}
+      margin-left : 0.1rem * $i !important
+
+    .m-r-i-#{$i}
+      margin-right: 0.1rem * $i !important
+
+    .m-b-i-#{$i}
+      margin-bottom: 0.1rem * $i !important
+
+@include createMargin(0, 100)
+
+// Usage : @include createPadding($min, $max)
+// $min : taille min du padding (en px), $max : taille max du padding (en px)
+// Crée des classes .p-X, .pt-X, .pr-X, .pb-X, .pl-X pour générer des marges automatiquement (/! taille en px)
+@mixin createPadding($min, $max)
+  @for $i from $min to $max+1
+    .p-#{$i}
+      padding : 0.1rem * $i
+
+    .p-t-#{$i}
+      padding-top: 0.1rem * $i
+
+    .p-l-#{$i}
+      padding-left : 0.1rem * $i
+
+    .p-r-#{$i}
+      padding-right: 0.1rem * $i
+
+    .p-b-#{$i}
+      padding-bottom: 0.1rem * $i
+
+    .p-i-#{$i}
+      padding : 0.1rem * $i !important
+
+    .p-t-i-#{$i}
+      padding-top: 0.1rem * $i !important
+
+    .p-l-i-#{$i}
+      padding-left : 0.1rem * $i !important
+
+    .p-r-i-#{$i}
+      padding-right: 0.1rem* $i !important
+
+    .p-b-i-#{$i}
+      padding-bottom: 0.1rem * $i !important
+
+@include createPadding(0, 100)
