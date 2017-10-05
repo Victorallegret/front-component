@@ -221,7 +221,7 @@ gulp.task('removeBuild', function () {
 
 // RUN SLIM | SASS | COFFEE ($ gulp dev)
 // ---------------------------------------------------------
-gulp.task('dev', ['slim', 'sass', 'coffee']);
+gulp.task('dev', ['slim', 'sass', 'coffee', 'fonts', 'uncss', 'img']);
 
 
 
