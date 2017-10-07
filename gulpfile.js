@@ -154,18 +154,6 @@ gulp.task('coffee', function() {
 
 
 
-// COPY JS VENDORS
-// ---------------------------------------------------------
-// gulp.task('jsVendors', function() {
-//   return gulp.src('./dev/assets/javascripts/vendors/**/*.js')
-//     // copy result to build folder
-//     .pipe(gulp.dest(coffee_build))
-//     // notify when task completed
-//     .pipe(plugins.notify('Javascript vendors injected !'));
-// });
-
-
-
 // FONTS
 // ---------------------------------------------------------
 gulp.task('fonts', function() {
@@ -259,6 +247,7 @@ gulp.task('watch', ['dev'], function () {
       baseDir: build,
       index: "index.html"
     },
+    online: true,
     scrollProportionally: true,
     notify: false
   })
