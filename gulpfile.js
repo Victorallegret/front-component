@@ -81,7 +81,7 @@ gulp.task('slim', function () {
     // reload server on slim save
     .pipe(stream({once:true}))
     // notify when task completed
-    .pipe(plugins.notify('Slim compilation completed !'));
+    .pipe(plugins.notify({message: 'Slim compilation completed !', onLast: true}));
 });
 
 
@@ -116,7 +116,7 @@ gulp.task('sass', function () {
     // reload on sass save
     .pipe(reload({stream:true}))
     // notify when task completed
-    .pipe(plugins.notify('Sass compilation completed !'));
+    .pipe(plugins.notify({message: 'Sass compilation completed !', onLast: true}));
 });
 
 
@@ -149,7 +149,7 @@ gulp.task('coffee', function() {
     // reload on coffee save
     .pipe(reload({stream:true}))
     // notify when task completed
-    .pipe(plugins.notify('Coffee compilation completed !'));
+    .pipe(plugins.notify({message: 'Coffee compilation completed !', onLast: true}));
 });
 
 
@@ -162,6 +162,7 @@ gulp.task('fonts', function() {
     .pipe(plugins.rename({dirname: ''}))
     // copy result to build folder
     .pipe(gulp.dest(fonts_build))
+    .pipe(plugins.notify({message: 'Fonts compilation completed !', onLast: true}));
 });
 
 
@@ -195,7 +196,7 @@ gulp.task('img', function () {
     // copy result to build folder
     .pipe(gulp.dest(img_build))
     // notify when task completed
-    .pipe(plugins.notify('Images are optimized!'));
+    .pipe(plugins.notify({message: 'Image are optimized !', onLast: true}));
 });
 
 
