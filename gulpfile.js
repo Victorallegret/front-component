@@ -16,13 +16,10 @@
 // ---------------------------------------------------------
 
 var gulp    = require('gulp'),
+    // require every plugins
     plugins = require('gulp-load-plugins')({
         pattern: '*'
-    }),
-    // reload auto for Browser Sync
-    reload  = plugins.browserSync.reload
-    // reload once for Browser Sync
-    stream = plugins.browserSync.stream
+    })
 
 
 
@@ -78,8 +75,6 @@ gulp.task('slim', function () {
     .pipe(plugins.rename({dirname: ''}))
     // copy result to build folder
     .pipe(gulp.dest(build))
-    // reload server on slim save
-    .pipe(stream({once:true}))
     // notify when task completed
     .pipe(plugins.notify({message: 'Slim compilation completed !', onLast: true}));
 });
@@ -107,14 +102,12 @@ gulp.task('sass', function () {
     }))
     // concat all files
     .pipe(plugins.concat('main.css'))
+    // TODO : UPDATE MINIFY (LAG)
     // rename to .min
-    .pipe(plugins.rename('main.min.css'))
-    // minify css
-    .pipe(plugins.minifyCss())
+    // .pipe(plugins.rename('main.min.css'))
+    // .pipe(plugins.minifyCss())
     // copy result to build folder
     .pipe(gulp.dest(sass_build))
-    // reload on sass save
-    .pipe(reload({stream:true}))
     // notify when task completed
     .pipe(plugins.notify({message: 'Sass compilation completed !', onLast: true}));
 });
@@ -146,8 +139,6 @@ gulp.task('coffee', function() {
     .pipe(plugins.uglify())
     // copy result to build folder
     .pipe(gulp.dest(coffee_build))
-    // reload on coffee save
-    .pipe(reload({stream:true}))
     // notify when task completed
     .pipe(plugins.notify({message: 'Coffee compilation completed !', onLast: true}));
 });
@@ -211,6 +202,25 @@ gulp.task('removeBuild', function () {
 
 
 
+// RELOAD
+// ---------------------------------------------------------
+
+///// RELOAD SLIM
+gulp.task('reload-slim', ['slim'], function(){
+  plugins.browserSync.reload();
+});
+
+
+///// RELOAD SASS
+gulp.task('reload-sass', ['sass'], function(){
+  plugins.browserSync.reload();
+});
+
+
+///// RELOAD COFFEE
+gulp.task('reload-coffee', ['coffee'], function(){
+  plugins.browserSync.reload();
+});
 
 
 ////////////////////
@@ -252,10 +262,10 @@ gulp.task('watch', ['dev'], function () {
     scrollProportionally: true,
     notify: false
   })
-  gulp.watch(dev + '/**/*.slim', ['slim']);
-  gulp.watch(dev + '/**/*.sass', ['sass']);
-  gulp.watch(dev + '/**/*.coffee', ['coffee']);
-  gulp.watch(build  + '/**/*.html').on('change', stream);
+  gulp.watch(dev + '/**/*.slim', ['reload-slim']);
+  gulp.watch(dev + '/**/*.sass', ['reload-sass']);
+  gulp.watch(dev + '/**/*.coffee', ['reload-coffee']);
+  // gulp.watch(build  + '/**/*.html').on('change', reload);
 });
 
 ////// COMMAND
