@@ -175,7 +175,7 @@ gulp.task('fonts', function() {
 // REMOVE UNUSED CSS
 // ---------------------------------------------------------
 gulp.task('uncss', function () {
-  return gulp.src(sass_build + '/main.min.css')
+  return gulp.src(sass_build + '/*.min.css')
   // remove unused css
    .pipe(plugins.uncss({
       html: [build + '/**/*.html']
@@ -185,7 +185,7 @@ gulp.task('uncss', function () {
    // copy result to build folder
    .pipe(gulp.dest(sass_build))
    // notify when task completed
-   .pipe(plugins.notify('Css optimized !'));
+   .pipe(plugins.notify({message: 'Css are optimized !', onLast: true}));
 });
 
 
@@ -202,16 +202,6 @@ gulp.task('img', function () {
     .pipe(gulp.dest(img_build))
     // notify when task completed
     .pipe(plugins.notify({message: 'Image are optimized !', onLast: true}));
-});
-
-
-
-// REMOVE BUILD FOLDER
-// ---------------------------------------------------------
-gulp.task('removeBuild', function () {
-  return gulp.src(build, { read: false})
-    .pipe(plugins.rimraf())
-    .pipe(plugins.notify('Prod folder deleted !'));
 });
 
 
@@ -237,27 +227,34 @@ gulp.task('reload-coffee', ['coffee'], function(){
 });
 
 
+
+
+
 ////////////////////
 // COMMANDS
 ////////////////////////////////////////////////////////////////////////////////
 
+// TASK CLEAN ($ gulp clean)
+// ---------------------------------------------------------
+gulp.task('clean', function () {
+  return gulp.src(build, {read: false})
+    .pipe(plugins.rimraf())
+    .pipe(plugins.notify('Prod folder deleted !'));
+});
 
 
-// RUN SLIM | SASS | COFFEE ($ gulp dev)
+
+// TASK DEV ($ gulp dev)
 // ---------------------------------------------------------
 gulp.task('dev', ['slim', 'sass', 'cssVendors', 'coffee', 'fonts', 'img']);
 
 
 
-// RUN SLIM | SASS | COFFEE | UNCSS | IMG ($ gulp build)
+// TASK BUILD ($ gulp build)
 // ---------------------------------------------------------
-gulp.task('build', ['slim', 'sass', 'coffee', 'cssVendors', 'fonts', 'uncss', 'img']);
-
-
-
-// RUN CLEAN ($ gulp clean)
-// ---------------------------------------------------------
-gulp.task('clean', ['removeBuild']);
+gulp.task('build', ['dev'], function(){
+  gulp.start(['uncss']);
+});
 
 
 
@@ -282,4 +279,6 @@ gulp.task('watch', ['dev'], function () {
 });
 
 ////// COMMAND
-gulp.task('default', ['watch'])
+gulp.task('default', ['clean'], function(){
+  gulp.start(['watch']);
+});
