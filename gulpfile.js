@@ -69,8 +69,6 @@ gulp.task('slim', function () {
     }))
     // run task only for updated files
     .pipe(plugins.newer(build))
-    // minify html
-    .pipe(plugins.minifyHtml())
     // remove all folder
     .pipe(plugins.rename({dirname: ''}))
     // copy result to build folder
