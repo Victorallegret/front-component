@@ -82,7 +82,7 @@ gulp.task('slim', function () {
 // COMPILE SASS TO CSS
 // ---------------------------------------------------------
 gulp.task('sass', function () {
-  return gulp.src(sass_dev + '/**/*.sass')
+  return gulp.src([sass_dev + '/**/*.sass', '!./dev/assets/stylesheets/vendors/**/*.{css,scss,sass}'])
     // prevent server from crashing
     .pipe(plugins.plumber({ errorHandler: function(err) {
       plugins.notify.onError({
@@ -100,14 +100,30 @@ gulp.task('sass', function () {
     }))
     // concat all files
     .pipe(plugins.concat('main.css'))
-    // TODO : UPDATE MINIFY (LAG)
     // rename to .min
-    // .pipe(plugins.rename('main.min.css'))
-    // .pipe(plugins.minifyCss())
+    .pipe(plugins.rename('main.min.css'))
     // copy result to build folder
     .pipe(gulp.dest(sass_build))
     // notify when task completed
     .pipe(plugins.notify({message: 'Sass compilation completed !', onLast: true}));
+});
+
+
+
+// CONCAT CSS VENDORS
+// ---------------------------------------------------------
+gulp.task('cssVendors', function () {
+  return gulp.src(sass_dev + '/vendors/**/*.{css,scss,sass}')
+    // compile sass to css
+    .pipe(plugins.sass())
+    // concat all files
+    .pipe(plugins.concat('vendors.css'))
+    // rename to .min
+    .pipe(plugins.rename('vendors.min.css'))
+    // copy result to build folder
+    .pipe(gulp.dest(sass_build))
+    // notify when task completed
+    .pipe(plugins.notify({message: 'Css vendors compilation completed !', onLast: true}));
 });
 
 
@@ -159,7 +175,7 @@ gulp.task('fonts', function() {
 // REMOVE UNUSED CSS
 // ---------------------------------------------------------
 gulp.task('uncss', function () {
-  return gulp.src(sass_build + '/app.css')
+  return gulp.src(sass_build + '/main.min.css')
   // remove unused css
    .pipe(plugins.uncss({
       html: [build + '/**/*.html']
@@ -169,7 +185,7 @@ gulp.task('uncss', function () {
    // copy result to build folder
    .pipe(gulp.dest(sass_build))
    // notify when task completed
-   .pipe(plugins.notify('Unused CSS removed !'));
+   .pipe(plugins.notify('Css optimized !'));
 });
 
 
@@ -229,13 +245,13 @@ gulp.task('reload-coffee', ['coffee'], function(){
 
 // RUN SLIM | SASS | COFFEE ($ gulp dev)
 // ---------------------------------------------------------
-gulp.task('dev', ['slim', 'sass', 'coffee', 'fonts', 'uncss', 'img']);
+gulp.task('dev', ['slim', 'sass', 'cssVendors', 'coffee', 'fonts', 'img']);
 
 
 
 // RUN SLIM | SASS | COFFEE | UNCSS | IMG ($ gulp build)
 // ---------------------------------------------------------
-gulp.task('build', ['slim', 'sass', 'coffee', 'fonts', 'uncss', 'img']);
+gulp.task('build', ['slim', 'sass', 'coffee', 'cssVendors', 'fonts', 'uncss', 'img']);
 
 
 
@@ -263,7 +279,6 @@ gulp.task('watch', ['dev'], function () {
   gulp.watch(dev + '/**/*.slim', ['reload-slim']);
   gulp.watch(dev + '/**/*.sass', ['reload-sass']);
   gulp.watch(dev + '/**/*.coffee', ['reload-coffee']);
-  // gulp.watch(build  + '/**/*.html').on('change', reload);
 });
 
 ////// COMMAND
