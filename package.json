@@ -4,6 +4,7 @@
   "description": "gulp template",
   "main": "gulpfile.js",
   "dependencies": {
+    "bootstrap": "^4.0.0-beta",
     "browser-sync": "^2.18.13",
     "gulp": "^3.9.1",
     "gulp-coffee": "^2.3.4",
