@@ -19,10 +19,12 @@
     "gulp-uglify": "^3.0.0",
     "gulp-uncss": "^1.0.6",
     "jquery": "^3.2.1",
+    "slick-carousel": "^1.8.1",
     "waypoints": "^4.0.1"
   },
   "devDependencies": {
     "browser-sync": "^2.18.13",
+    "browserify-shim": "^3.8.14",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^4.0.0",
     "gulp-browserify": "^0.5.1",
@@ -42,6 +44,19 @@
     "gulp-slim": "^0.3.0",
     "gulp-uncss": "^1.0.6",
     "turbolinks": "^5.0.3"
+  },
+  "browser": {
+    "waypoints": "./node_modules/waypoints/lib/noframework.waypoints.js"
+  },
+  "browserify-shim": {
+    "waypoints": {
+      "exports": "waypoints"
+    }
+  },
+  "browserify": {
+    "transform": [
+      "browserify-shim"
+    ]
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
