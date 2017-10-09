@@ -138,23 +138,42 @@ gulp.task('coffee', function() {
           title: "Gulp error in " + err.plugin,
       })(err);
     }}))
-    // select coffee files
+    // add include for coffee
     .pipe(plugins.include({ extensions: "coffee" }))
     // compile coffee to js
     .pipe(plugins.coffee())
-    // select js files
-    .pipe(plugins.include({ extensions: "js" }))
-    .pipe(plugins.newer(coffee_build + '/all.js'))
     // concat all files
-    .pipe(plugins.concat('all.js'))
+    .pipe(plugins.concat('main.js'))
     // rename to .min
-    .pipe(plugins.rename('all.min.js'))
+    .pipe(plugins.rename('main.min.js'))
     // minify js
     .pipe(plugins.uglify())
-    // copy result to build folder
+    // // copy result to build folder
     .pipe(gulp.dest(coffee_build))
     // notify when task completed
     .pipe(plugins.notify({message: 'Coffee compilation completed !', onLast: true}));
+});
+
+
+
+// COMPILE COFFEE TO JS
+// ---------------------------------------------------------
+gulp.task('jsVendors', function() {
+  return gulp.src(coffee_dev + '/vendors.js')
+    // require node packages
+    .pipe(plugins.browserify({
+      insertGlobals: true
+    }))
+    // minify js
+    .pipe(plugins.uglify())
+    // concat all files
+    .pipe(plugins.concat('vendors.js'))
+    // rename to .min
+    .pipe(plugins.rename('vendors.min.js'))
+    // // copy result to build folder
+    .pipe(gulp.dest(coffee_build))
+    // notify when task completed
+    .pipe(plugins.notify({message: 'Js vendors compilation completed !', onLast: true}));
 });
 
 
@@ -246,7 +265,7 @@ gulp.task('clean', function () {
 
 // TASK DEV ($ gulp dev)
 // ---------------------------------------------------------
-gulp.task('dev', ['slim', 'sass', 'cssVendors', 'coffee', 'fonts', 'img']);
+gulp.task('dev', ['slim', 'sass', 'cssVendors', 'coffee', 'jsVendors', 'fonts', 'img']);
 
 
 
