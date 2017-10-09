@@ -290,7 +290,15 @@ gulp.task('watch', ['dev'], function () {
     },
     online: true,
     scrollProportionally: true,
-    notify: false
+    notify: false,
+    snippetOptions: {
+      rule: {
+        match: /<\/head>/i,
+        fn: function (snippet, match) {
+          return snippet + match;
+        }
+      }
+    }
   })
   gulp.watch(dev + '/**/*.slim', ['reload-slim']);
   gulp.watch(dev + '/**/*.sass', ['reload-sass']);
