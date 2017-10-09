@@ -1,2 +1,3 @@
-require('./vendors/turbolinks.js');
 var $ = require("jquery");
+require('./vendors/turbolinks.js');
+require("waypoints");

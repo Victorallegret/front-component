@@ -18,7 +18,8 @@
     "gulp-slim": "^0.3.0",
     "gulp-uglify": "^3.0.0",
     "gulp-uncss": "^1.0.6",
-    "jquery": "^3.2.1"
+    "jquery": "^3.2.1",
+    "waypoints": "^4.0.1"
   },
   "devDependencies": {
     "browser-sync": "^2.18.13",
