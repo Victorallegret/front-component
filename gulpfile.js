@@ -156,7 +156,7 @@ gulp.task('coffee', function() {
 
 
 
-// COMPILE COFFEE TO JS
+// INSTALL VENDORS WITH BROWSERIFY
 // ---------------------------------------------------------
 gulp.task('jsVendors', function() {
   return gulp.src(coffee_dev + '/vendors.js')

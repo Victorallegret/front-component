@@ -20,7 +20,9 @@
     "gulp-uglify": "^3.0.0",
     "gulp-uncss": "^1.0.6",
     "jquery": "^3.2.1",
+    "popper.js": "^1.12.5",
     "slick-carousel": "^1.8.1",
+    "tether": "^1.4.0",
     "waypoints": "^4.0.1"
   },
   "devDependencies": {
