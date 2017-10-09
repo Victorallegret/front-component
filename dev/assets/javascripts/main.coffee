@@ -4,7 +4,8 @@
 #////////////////////
 #// REQUIRE COFFEE FILES
 #////////////////////////////////////////////////////////////////////////////////
-#=require layout/test.coffee
+#=require layout/layout.coffee
+#=require components/components.coffee
 
 
 
