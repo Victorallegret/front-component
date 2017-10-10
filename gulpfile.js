@@ -17,7 +17,7 @@
 
 var gulp    = require('gulp'),
     // require every plugins
-    plugins = require('gulp-load-plugins')({
+    $ = require('gulp-load-plugins')({
         pattern: '*'
     })
 
@@ -57,24 +57,24 @@ var slim_build     = './build/views/',
 gulp.task('slim', function () {
   return gulp.src([slim_dev + '/**/*.slim', '!./dev/views/partials/**/*.slim', '!./dev/views/layout/**/*.slim'])
     // prevent server from crashing
-    .pipe(plugins.plumber({ errorHandler: function(err) {
-      plugins.notify.onError({
+    .pipe($.plumber({ errorHandler: function(err) {
+      $.notify.onError({
           title: "Gulp error in " + err.plugin
       })(err);
     }}))
     // compile slim to html
-    .pipe(plugins.slim({
+    .pipe($.slim({
       pretty: false,
       include: true
     }))
     // run task only for updated files
-    .pipe(plugins.newer(build))
+    .pipe($.newer(build))
     // remove all folder
-    .pipe(plugins.rename({dirname: ''}))
+    .pipe($.rename({dirname: ''}))
     // copy result to build folder
     .pipe(gulp.dest(build))
     // notify when task completed
-    .pipe(plugins.notify({message: 'Slim compilation completed !', onLast: true}));
+    .pipe($.notify({message: 'Slim compilation completed !', onLast: true}));
 });
 
 
@@ -84,28 +84,28 @@ gulp.task('slim', function () {
 gulp.task('sass', function () {
   return gulp.src([sass_dev + '/**/*.sass', '!./dev/assets/stylesheets/vendors/**/*.{css,scss,sass}'])
     // prevent server from crashing
-    .pipe(plugins.plumber({ errorHandler: function(err) {
-      plugins.notify.onError({
+    .pipe($.plumber({ errorHandler: function(err) {
+      $.notify.onError({
           title: "Gulp error in " + err.plugin,
       })(err);
     }}))
     // add sass glob import
-    .pipe(plugins.sassGlob())
+    .pipe($.sassGlob())
     // compile sass to css
-    .pipe(plugins.sass())
+    .pipe($.sass())
     // add auto-prefixes
-    .pipe(plugins.autoprefixer({
+    .pipe($.autoprefixer({
       browsers: ['last 2 versions'],
       cascade: false
     }))
     // concat all files
-    .pipe(plugins.concat('main.css'))
+    .pipe($.concat('main.css'))
     // rename to .min
-    .pipe(plugins.rename('main.min.css'))
+    .pipe($.rename('main.min.css'))
     // copy result to build folder
     .pipe(gulp.dest(sass_build))
     // notify when task completed
-    .pipe(plugins.notify({message: 'Sass compilation completed !', onLast: true}));
+    .pipe($.notify({message: 'Sass compilation completed !', onLast: true}));
 });
 
 
@@ -115,15 +115,15 @@ gulp.task('sass', function () {
 gulp.task('cssVendors', function () {
   return gulp.src(sass_dev + '/vendors/**/*.{css,scss,sass}')
     // compile sass to css
-    .pipe(plugins.sass())
+    .pipe($.sass())
     // concat all files
-    .pipe(plugins.concat('vendors.css'))
+    .pipe($.concat('vendors.css'))
     // rename to .min
-    .pipe(plugins.rename('vendors.min.css'))
+    .pipe($.rename('vendors.min.css'))
     // copy result to build folder
     .pipe(gulp.dest(sass_build))
     // notify when task completed
-    .pipe(plugins.notify({message: 'Css vendors compilation completed !', onLast: true}));
+    .pipe($.notify({message: 'Css vendors compilation completed !', onLast: true}));
 });
 
 
@@ -133,25 +133,25 @@ gulp.task('cssVendors', function () {
 gulp.task('coffee', function() {
   return gulp.src(coffee_dev + '/main.coffee')
     // prevent server from crashing
-    .pipe(plugins.plumber({ errorHandler: function(err) {
-      plugins.notify.onError({
+    .pipe($.plumber({ errorHandler: function(err) {
+      $.notify.onError({
           title: "Gulp error in " + err.plugin,
       })(err);
     }}))
     // add include for coffee
-    .pipe(plugins.include({ extensions: "coffee" }))
+    .pipe($.include({ extensions: "coffee" }))
     // compile coffee to js
-    .pipe(plugins.coffee())
+    .pipe($.coffee())
     // concat all files
-    .pipe(plugins.concat('main.js'))
+    .pipe($.concat('main.js'))
     // rename to .min
-    .pipe(plugins.rename('main.min.js'))
+    .pipe($.rename('main.min.js'))
     // minify js
-    .pipe(plugins.uglify())
+    .pipe($.uglify())
     // // copy result to build folder
     .pipe(gulp.dest(coffee_build))
     // notify when task completed
-    .pipe(plugins.notify({message: 'Coffee compilation completed !', onLast: true}));
+    .pipe($.notify({message: 'Coffee compilation completed !', onLast: true}));
 });
 
 
@@ -161,19 +161,19 @@ gulp.task('coffee', function() {
 gulp.task('jsVendors', function() {
   return gulp.src(coffee_dev + '/vendors.js')
     // require node packages
-    .pipe(plugins.browserify({
+    .pipe($.browserify({
       insertGlobals: true
     }))
     // minify js
-    .pipe(plugins.uglify())
+    .pipe($.uglify())
     // concat all files
-    .pipe(plugins.concat('vendors.js'))
+    .pipe($.concat('vendors.js'))
     // rename to .min
-    .pipe(plugins.rename('vendors.min.js'))
+    .pipe($.rename('vendors.min.js'))
     // // copy result to build folder
     .pipe(gulp.dest(coffee_build))
     // notify when task completed
-    .pipe(plugins.notify({message: 'Js vendors compilation completed !', onLast: true}));
+    .pipe($.notify({message: 'Js vendors compilation completed !', onLast: true}));
 });
 
 
@@ -183,10 +183,10 @@ gulp.task('jsVendors', function() {
 gulp.task('fonts', function() {
   return gulp.src(fonts_dev + '/**/*.{eot,svg,ttf,woff,woff2}')
     // remove under-folder
-    .pipe(plugins.rename({dirname: ''}))
+    .pipe($.rename({dirname: ''}))
     // copy result to build folder
     .pipe(gulp.dest(fonts_build))
-    .pipe(plugins.notify({message: 'Fonts compilation completed !', onLast: true}));
+    .pipe($.notify({message: 'Fonts compilation completed !', onLast: true}));
 });
 
 
@@ -196,15 +196,15 @@ gulp.task('fonts', function() {
 gulp.task('uncss', function () {
   return gulp.src(sass_build + '/*.min.css')
   // remove unused css
-   .pipe(plugins.uncss({
+   .pipe($.uncss({
       html: [build + '/**/*.html']
    }))
    // minify css
-   .pipe(plugins.cleanCss())
+   .pipe($.cleanCss())
    // copy result to build folder
    .pipe(gulp.dest(sass_build))
    // notify when task completed
-   .pipe(plugins.notify({message: 'Css are optimized !', onLast: true}));
+   .pipe($.notify({message: 'Css are optimized !', onLast: true}));
 });
 
 
@@ -214,13 +214,13 @@ gulp.task('uncss', function () {
 gulp.task('img', function () {
   return gulp.src(img_dev + '/**/*.{png,jpg,jpeg,gif,svg,ico}')
     // run task only for updated files
-    .pipe(plugins.newer(img_build))
+    .pipe($.newer(img_build))
     // minify images
-    .pipe(plugins.imagemin())
+    .pipe($.imagemin())
     // copy result to build folder
     .pipe(gulp.dest(img_build))
     // notify when task completed
-    .pipe(plugins.notify({message: 'Image are optimized !', onLast: true}));
+    .pipe($.notify({message: 'Image are optimized !', onLast: true}));
 });
 
 
@@ -230,19 +230,19 @@ gulp.task('img', function () {
 
 ///// RELOAD SLIM
 gulp.task('reload-slim', ['slim'], function(){
-  plugins.browserSync.reload();
+  $.browserSync.reload();
 });
 
 
 ///// RELOAD SASS
 gulp.task('reload-sass', ['sass'], function(){
-  plugins.browserSync.reload();
+  $.browserSync.reload();
 });
 
 
 ///// RELOAD COFFEE
 gulp.task('reload-coffee', ['coffee'], function(){
-  plugins.browserSync.reload();
+  $.browserSync.reload();
 });
 
 
@@ -257,8 +257,8 @@ gulp.task('reload-coffee', ['coffee'], function(){
 // ---------------------------------------------------------
 gulp.task('clean', function () {
   return gulp.src(build, {read: false})
-    .pipe(plugins.rimraf())
-    .pipe(plugins.notify('Prod folder deleted !'));
+    .pipe($.rimraf())
+    .pipe($.notify('Prod folder deleted !'));
 });
 
 
@@ -282,7 +282,7 @@ gulp.task('build', ['dev'], function(){
 
 ///// WATCH
 gulp.task('watch', ['dev'], function () {
-  plugins.browserSync.init({
+  $.browserSync.init({
     port: 3000,
     server: {
       baseDir: build,
