@@ -200,7 +200,7 @@ gulp.task('uncss', function () {
       html: [build + '/**/*.html']
    }))
    // minify css
-   .pipe(plugins.minifyCss())
+   .pipe(plugins.cleanCss())
    // copy result to build folder
    .pipe(gulp.dest(sass_build))
    // notify when task completed
