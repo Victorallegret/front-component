@@ -170,7 +170,7 @@ gulp.task('jsVendors', function() {
     .pipe($.concat('vendors.js'))
     // rename to .min
     .pipe($.rename('vendors.min.js'))
-    // // copy result to build folder
+    // copy result to build folder
     .pipe(gulp.dest(coffee_build))
     // notify when task completed
     .pipe($.notify({message: 'Js vendors compilation completed !', onLast: true}));
@@ -186,6 +186,7 @@ gulp.task('fonts', function() {
     .pipe($.rename({dirname: ''}))
     // copy result to build folder
     .pipe(gulp.dest(fonts_build))
+    // notify when task completed
     .pipe($.notify({message: 'Fonts compilation completed !', onLast: true}));
 });
 
@@ -257,7 +258,9 @@ gulp.task('reload-coffee', ['coffee'], function(){
 // ---------------------------------------------------------
 gulp.task('clean', function () {
   return gulp.src(build, {read: false})
+    // remove folder build
     .pipe($.rimraf())
+    // notify when task completed
     .pipe($.notify('Prod folder deleted !'));
 });
 
