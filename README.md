@@ -84,7 +84,7 @@ GulpDup use a bunch of vendors:
 
 > **INFOS** You can update the default structure project, but you may need to update the gulfile.js too.
 
-The project use the [Atomic Design Methodology](http://bradfrost.com/blog/post/atomic-web-design/)
+The project is based on the [Atomic Design Methodology](http://bradfrost.com/blog/post/atomic-web-design/).
 <br/>
 
 The development structure is divided into 2 folders :
@@ -92,11 +92,44 @@ The development structure is divided into 2 folders :
   * **assets** : Stylesheets (sass / css vendors) | Javascripts (coffeeScript / js vendors) | Fonts | Images.
   * **views** : Slim templates of the project (HTML)
 
-### Slim structure
+### Views structure
 
+There is 2 types of slim files:
 
+  * **basic files** : `index.slim`, `contact.slim` etc ...
+  * **partials files** : `_index.slim`, `_contact.slim` etc ...
 
+> **WARNING** All the partials must be in `./dev/views/layout/` and `./dev/views/partials/` folders.
 
+Basics files you should need are the `./dev/views/layout/` partials : `_head.slim`, `_footer.slim` `_header.slim`.
+<br/>
 
+Then you just need to call then in your basic slim files.
 
+> **INFOS** Feel free to create other folders in `./dev/views/`
 
+### Assets structure
+
+  * **fonts**
+    * Use `.eot`, `.svg`, `.ttf`, `.woff`, `.woff2` extensions.
+    * Put all fonts you need in this folder.
+    * You can create folders to organize your fonts.
+    * Remember to restart the server after adding new fonts.
+
+  * **images**
+    * Use `.png`, `.jpg`, `.jpeg`, `.gif`, `.svg`, `.ico` extensions.
+    * Put all images you need in this folder.
+    * You can create folders to organize your images.
+    * Remember to restart the server after adding new images.
+
+  * **javascript**
+    * Remember to call every files in the `main.coffee` file.
+    * Use classes.
+    * Feel free to update the default javascripts folders.
+    * Call with `require` the vendors you need in the `vendors.js` file.
+
+  * **stylesheets**
+    * If you add new folders, remember to call them into the `main.sass` file.
+    * The project use bootstrap, so there is some basic styles.
+    * The project come with bunch of variables | mixins | helpers, free to update !
+    * I recommand to design every components of the project into the `./dev/assets/stylesheets/components/` folder.
