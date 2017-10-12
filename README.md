@@ -33,6 +33,8 @@ You can run independently every commands of the gulpfile.js. But the 3 commands 
   $ gulp
   ```
   This command will run every command you need to launch a local server and compile all your assets / templates.
+  <br/>
+  This command will also start a `gulp.watch` task. The server will watch every `.sass`, `.slim` and `.coffee` files. If you update one of these files, the server will restart.
 
 * **Create your production environment:**
   ```
@@ -104,7 +106,7 @@ There is 2 types of slim files:
 Basics files you should need are the `./dev/views/layout/` partials : `_head.slim`, `_footer.slim` `_header.slim`.
 <br/>
 
-Then you just need to call then in your basic slim files.
+Then you just need to call them in your basic slim files.
 
 > **INFOS** Feel free to create other folders in `./dev/views/`
 
