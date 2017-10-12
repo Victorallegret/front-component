@@ -1,19 +1,23 @@
 # GulpDup
 
 GulpDup is a blank template for making statics webapps propulsed by [Gulp.js](https://gulpjs.com/).
+<br/>
 It work with [Sass](http://sass-lang.com/),  [Slim-template](http://slim-lang.com/) and [CoffeeScript](http://coffeescript.org/).
+<br/>
 The project use [BrowserSync](https://www.browsersync.io/) to run a multi-device auto-reload server.
+<br/>
 It come with a bunch of libraries, required with [Browserify](http://browserify.org/) : Bootstrap v4, Jquery, Slick-carousel, Waypoints and Turbolinks.
+<br/>
 GulpDup project structure is based on the [Atomic Design Methodology](http://bradfrost.com/blog/post/atomic-web-design/) (Atoms | Molecules | Organisms).
 
 
 ## Install
 
-**You must have [node.js](https://nodejs.org/en/) installed to run GulpDup.**
+> **WARNING** You must have [node.js](https://nodejs.org/en/) installed to run GulpDup.
 
 **First, you’ll have to [fork](https://help.github.com/articles/fork-a-repo/) or [clone](https://help.github.com/articles/cloning-a-repository/) the GulpDup repository**
 
-### Then in your Terminal :
+**Then in your Terminal :**
 ```
 $ npm install
 ```
@@ -35,6 +39,7 @@ You can run independently every commands of the gulpfile.js. But the 3 commands 
   $ gulp build
   ```
   This command will create a `build` folder with all the assets / template optimized and ready to deploy.
+
 * **Clean the production environment:**
   ```
   $ gulp clean
