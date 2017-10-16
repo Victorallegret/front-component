@@ -117,6 +117,8 @@ Then you just need to call them in your basic slim files.
     * Put all fonts you need in this folder.
     * You can create folders to organize your fonts.
     * Remember to restart the server after adding new fonts.
+    * Defaults text fonts are : `brandon`, `gotham` and `Unna`.
+    * The project use the [Material Design Icons](https://material.io/icons/) : `i.material-icons face`
 
   * **images**
     * Use `.png`, `.jpg`, `.jpeg`, `.gif`, `.svg`, `.ico` extensions.
