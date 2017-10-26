@@ -17,6 +17,7 @@ body
   font-size: $text-font-size
   font-family: $font-family-sans-serif
   line-height: 1.7
+  overflow: hidden
 
   //// fix glitter font-weight issue
   -webkit-font-smoothing: antialiased
@@ -43,9 +44,10 @@ li
 // ---------------------------------------------------------
 a
   color: $primary
+  transition: $transition-default
   text-decoration: none
-
   &:hover,
   &:focus
+    color: $white
     text-decoration: none
     outline: none
