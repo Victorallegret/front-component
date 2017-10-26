@@ -135,5 +135,5 @@ Then you just need to call them in your basic slim files.
   * **stylesheets**
     * If you add new folders, remember to call them into the `main.sass` file.
     * The project use bootstrap, so there is some basic styles.
-    * The project come with bunch of variables | mixins | helpers, free to update !
+    * The project come with a bunch of variables | mixins | helpers, free to update !
     * I recommand to design every components of the project into the `./dev/assets/stylesheets/components/` folder.
