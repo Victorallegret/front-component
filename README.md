@@ -34,7 +34,7 @@ You can run independently every commands of the gulpfile.js. But the 3 commands 
   ```
   This command will run every command you need to launch a local server and compile all your assets / templates.
   <br/>
-  This command will also start a `gulp.watch` task. The server will watch every `.sass`, `.slim` and `.coffee` files. If you update one of these files, the server will restart.
+  This command will also start a `gulp.watch` task. The server will watch every `.sass`, `.slim` and `.coffee` files. If you update one of these files, the server will reload.
 
 * **Create your production environment:**
   ```
@@ -75,9 +75,9 @@ GulpDup use a bunch of vendors:
 
 * [Turbolinks](https://github.com/turbolinks/turbolinks) : Make navigation application faster.
 * [Bootstrap v4](http://getbootstrap.com/) : Css framework.
-* [Jquery](https://jquery.com/) : Javascript librarie.
-* [Waypoints](http://imakewebthings.com/waypoints/) : Javascript librarie to trigger events on scroll.
-* [Slick-carousel](http://kenwheeler.github.io/slick/) : A librarie to create sliders.
+* [Jquery](https://jquery.com/) : Javascript library.
+* [Waypoints](http://imakewebthings.com/waypoints/) : Javascript library to trigger events on scroll.
+* [Slick-carousel](http://kenwheeler.github.io/slick/) : A library to create sliders.
 
 > **INFOS** You can use `require` to call new vendors in the `./dev/assets/javascripts/vendors.js`.
 
