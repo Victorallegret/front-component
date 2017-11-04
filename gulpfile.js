@@ -62,13 +62,13 @@ gulp.task('slim', function () {
           title: "Gulp error in " + err.plugin
       })(err);
     }}))
+    // Keep non-updated files infos in cache
+    .pipe($.cached(slim_dev + '/**/*.slim'))
     // compile slim to html
     .pipe($.slim({
       pretty: false,
       include: true
     }))
-    // run task only for updated files
-    .pipe($.newer(build))
     // remove all folder
     .pipe($.rename({dirname: ''}))
     // copy result to build folder
@@ -214,8 +214,6 @@ gulp.task('uncss', function () {
 // ---------------------------------------------------------
 gulp.task('img', function () {
   return gulp.src(img_dev + '/**/*.{png,jpg,jpeg,gif,svg,ico}')
-    // run task only for updated files
-    .pipe($.newer(img_build))
     // minify images
     .pipe($.imagemin())
     // copy result to build folder
