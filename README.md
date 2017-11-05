@@ -66,7 +66,7 @@ GulpDup use a bunch of npm plugins:
 * [gulp-rimraf](https://github.com/robrich/gulp-rimraf) : Delete files / folders.
 * [gulp-notify](https://www.npmjs.com/package/gulp-notify) : Add notifications when running tasks.
 
-> **INFOS** Feel free to add some in the gulfile !
+> **INFOS** Feel free to add some in the gulpfile !
 
 
 ## Vendors
