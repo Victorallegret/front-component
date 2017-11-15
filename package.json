@@ -32,6 +32,7 @@
     "gulp-sass": "^3.1.0",
     "gulp-sass-glob": "^1.0.8",
     "gulp-slim": "^0.3.0",
+    "gulp-sourcemaps": "^2.6.1",
     "gulp-uncss": "^1.0.6",
     "turbolinks": "^5.0.3"
   },

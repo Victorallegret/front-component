@@ -89,6 +89,8 @@ gulp.task('sass', function () {
           title: "Gulp error in " + err.plugin,
       })(err);
     }}))
+    // init sourcemaps
+    .pipe($.sourcemaps.init())
     // add sass glob import
     .pipe($.sassGlob())
     // compile sass to css
@@ -102,6 +104,8 @@ gulp.task('sass', function () {
     .pipe($.concat('main.css'))
     // rename to .min
     .pipe($.rename('main.min.css'))
+    // write sourcemaps
+    .pipe($.sourcemaps.write())
     // copy result to build folder
     .pipe(gulp.dest(sass_build))
     // notify when task completed
