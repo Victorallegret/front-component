@@ -14,11 +14,9 @@
 
 // REQUIRE
 // ---------------------------------------------------------
-var gulp    = require('gulp'),
-    // require every plugins
-    $ = require('gulp-load-plugins')({
-        pattern: '*'
-    })
+var gulp           = require('gulp'),
+$                  = require('gulp-load-plugins')({pattern: '*'})
+var gulpSequence   = require('gulp-sequence');
 
 
 
@@ -275,13 +273,13 @@ gulp.task('clean', function () {
 
 // TASK DEV ($ gulp dev)
 // ---------------------------------------------------------
-gulp.task('dev', $.gulpSequence('clean', 'slim', 'sass', 'cssVendors', 'coffee', 'jsVendors', 'fonts', 'img'));
+gulp.task('dev', gulpSequence('clean', 'slim', 'sass', 'cssVendors', 'coffee', 'jsVendors', 'fonts', 'img'));
 
 
 
 // TASK BUILD ($ gulp build)
 // ---------------------------------------------------------
-gulp.task('build', $.gulpSequence('dev', 'optimizeCss'));
+gulp.task('build', gulpSequence('dev', 'optimizeCss'));
 
 
 
