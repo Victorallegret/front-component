@@ -85,7 +85,7 @@ gulp.task('slim', function () {
 // COMPILE SASS TO CSS
 // ---------------------------------------------------------
 gulp.task('sass', function () {
-  return gulp.src([sass_dev + '/**/*.sass', '!./dev/assets/stylesheets/vendors/**/*.{css,scss,sass}'])
+  return gulp.src(sass_dev + 'main.sass')
     // prevent server from crashing
     .pipe($.plumber({ errorHandler: function(err) {
       $.notify.onError({
