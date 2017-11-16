@@ -14,7 +14,6 @@
 
 // REQUIRE
 // ---------------------------------------------------------
-
 var gulp    = require('gulp'),
     // require every plugins
     $ = require('gulp-load-plugins')({
@@ -55,7 +54,7 @@ var slim_build     = './build/views/',
 // COMPILE SLIM TO HTML
 // ---------------------------------------------------------
 gulp.task('slim', function () {
-  return gulp.src([slim_dev + '/**/*.slim', '!./dev/views/partials/**/*.slim', '!./dev/views/layout/**/*.slim'])
+  return gulp.src(slim_dev + '/**/*.slim')
     // prevent server from crashing
     .pipe($.plumber({ errorHandler: function(err) {
       $.notify.onError({
@@ -64,6 +63,10 @@ gulp.task('slim', function () {
     }}))
     // Keep non-updated files infos in cache
     .pipe($.cached(slim_dev + '/**/*.slim'))
+    // Ignore partials
+    .pipe($.filter(function (file) {
+        return !/\/_/.test(file.path) && !/^_/.test(file.relative);
+    }))
     // compile slim to html
     .pipe($.slim({
       pretty: false,
