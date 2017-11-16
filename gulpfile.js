@@ -275,15 +275,13 @@ gulp.task('clean', function () {
 
 // TASK DEV ($ gulp dev)
 // ---------------------------------------------------------
-gulp.task('dev', ['slim', 'sass', 'cssVendors', 'coffee', 'jsVendors', 'fonts', 'img']);
+gulp.task('dev', $.gulpSequence('clean', 'slim', 'sass', 'cssVendors', 'coffee', 'jsVendors', 'fonts', 'img'));
 
 
 
 // TASK BUILD ($ gulp build)
 // ---------------------------------------------------------
-gulp.task('build', ['dev'], function(){
-  gulp.start(['optimizeCss']);
-});
+gulp.task('build', $.gulpSequence('dev', 'optimizeCss'));
 
 
 
@@ -316,6 +314,4 @@ gulp.task('watch', ['dev'], function () {
 });
 
 ////// COMMAND
-gulp.task('default', ['clean'], function(){
-  gulp.start(['watch']);
-});
+gulp.task('default', ['watch'])
