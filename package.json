@@ -32,6 +32,7 @@
     "gulp-rimraf": "^0.2.1",
     "gulp-sass": "^3.1.0",
     "gulp-sass-glob": "^1.0.8",
+    "gulp-sequence": "^0.4.6",
     "gulp-slim": "^0.3.0",
     "gulp-sourcemaps": "^2.6.1",
     "gulp-uncss": "^1.0.6",
