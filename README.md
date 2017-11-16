@@ -56,11 +56,15 @@ GulpDup use a bunch of npm plugins:
 * [browserSync](https://www.browsersync.io/) : Run a multi-device auto-reload local server.
 * [browserify](http://browserify.org/) : Enable require modules in the browser.
 * [gulp-sass](http://sass-lang.com/) : Compile sass files into CSS.
+* [gulp-sass-glob](https://www.npmjs.com/package/gulp-sass-glob) : Add global import for sass files.
 * [gulp-uncss](https://www.npmjs.com/package/gulp-uncss) : Remove unused css properties.
 * [gulp-slim](http://slim-lang.com/) : Compile slim template files into HTML
 * [gulp-coffee](http://coffeescript.org/) : Compile coffeeScript files into Javascripts.
 * [gulp-contact](https://www.npmjs.com/package/gulp-concat) : Concat files.
 * [gulp-uglify](https://www.npmjs.com/package/gulp-uglify) : Minification for js files.
+* [gulp-sourcemaps](https://www.npmjs.com/package/gulp-sourcemaps) : Add sourcemaps for sass files.
+* [gulp-sequence](https://www.npmjs.com/package/gulp-sequence) : Run tasks in order.
+* [gulp-filter](https://www.npmjs.com/package/gulp-filter) : Add filter for gulp tasks.
 * [gulp-imagemin](https://www.npmjs.com/package/gulp-imagemin) : Optimize images.
 * [gulp-rename](https://www.npmjs.com/package/gulp-rename) : Auto rename files (.css to .min.css etc ..).
 * [gulp-rimraf](https://github.com/robrich/gulp-rimraf) : Delete files / folders.
