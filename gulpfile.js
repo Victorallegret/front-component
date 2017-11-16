@@ -117,6 +117,24 @@ gulp.task('sass', function () {
 
 
 
+// REMOVE UNUSED CSS
+// ---------------------------------------------------------
+gulp.task('optimizeCss', function () {
+  return gulp.src(sass_build + '/*.min.css')
+  // remove unused css
+   .pipe($.uncss({
+      html: [build + '/**/*.html']
+   }))
+   // minify css
+   .pipe($.cleanCss())
+   // copy result to build folder
+   .pipe(gulp.dest(sass_build))
+   // notify when task completed
+   .pipe($.notify({message: 'Css are optimized !', onLast: true}));
+});
+
+
+
 // CONCAT CSS VENDORS
 // ---------------------------------------------------------
 gulp.task('cssVendors', function () {
@@ -199,24 +217,6 @@ gulp.task('fonts', function() {
 
 
 
-// REMOVE UNUSED CSS
-// ---------------------------------------------------------
-gulp.task('uncss', function () {
-  return gulp.src(sass_build + '/*.min.css')
-  // remove unused css
-   .pipe($.uncss({
-      html: [build + '/**/*.html']
-   }))
-   // minify css
-   .pipe($.cleanCss())
-   // copy result to build folder
-   .pipe(gulp.dest(sass_build))
-   // notify when task completed
-   .pipe($.notify({message: 'Css are optimized !', onLast: true}));
-});
-
-
-
 // MINIFY IMAGES
 // ---------------------------------------------------------
 gulp.task('img', function () {
@@ -280,7 +280,7 @@ gulp.task('dev', ['slim', 'sass', 'cssVendors', 'coffee', 'jsVendors', 'fonts', 
 // TASK BUILD ($ gulp build)
 // ---------------------------------------------------------
 gulp.task('build', ['dev'], function(){
-  gulp.start(['uncss']);
+  gulp.start(['optimizeCss']);
 });
 
 
