@@ -221,6 +221,8 @@ gulp.task('fonts', function() {
 // ---------------------------------------------------------
 gulp.task('img', function () {
   return gulp.src(img_dev + '/**/*.{png,jpg,jpeg,gif,svg,ico}')
+    // run task only for new images
+    .pipe($.cached(img_dev + '/**/*.{png,jpg,jpeg,gif,svg,ico}'))
     // minify images
     .pipe($.imagemin())
     // copy result to build folder
