@@ -17,6 +17,11 @@ GulpDup project structure is based on the [Atomic Design Methodology](http://bra
 
 **First, you’ll have to [fork](https://help.github.com/articles/fork-a-repo/) or [clone](https://help.github.com/articles/cloning-a-repository/) the GulpDup repository**
 
+**You will have to install :**
+```
+$ npm install gulp -g
+```
+
 **Then in your Terminal :**
 ```
 $ npm install
@@ -69,6 +74,7 @@ GulpDup use a bunch of npm plugins:
 * [gulp-rename](https://www.npmjs.com/package/gulp-rename) : Auto rename files (.css to .min.css etc ..).
 * [gulp-rimraf](https://github.com/robrich/gulp-rimraf) : Delete files / folders.
 * [gulp-notify](https://www.npmjs.com/package/gulp-notify) : Add notifications when running tasks.
+* [gulp-wrap](https://www.npmjs.com/package/gulp-wrap) : Wrap every template files into one layout file.
 
 > **INFOS** Feel free to add some in the gulpfile !
 
@@ -105,14 +111,12 @@ There is 2 types of slim files:
   * **basic files** : `index.slim`, `contact.slim` etc ...
   * **partials files** : `_index.slim`, `_contact.slim` etc ...
 
-> **WARNING** All the partials must be in `./dev/views/layout/` and `./dev/views/partials/` folders.
+> **WARNING** All the partials must be call with an underscore. ex: `_layout.slim`
 
-Basics files you should need are the `./dev/views/layout/` partials : `_head.slim`, `_footer.slim` `_header.slim`.
+Basics files you should need are the `./dev/views/layout/` files & partials : `application.slim`, `_footer.slim` `_header.slim`.
 <br/>
 
-Then you just need to call them in your basic slim files.
-
-> **INFOS** Feel free to create other folders in `./dev/views/`
+> **INFOS** Every files are injected into the `application.slim` file, but you will have to include the footer partial into each file cause of a WIP issue of gulp-wrap.
 
 ### Assets structure
 
