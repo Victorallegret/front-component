@@ -65,6 +65,8 @@ gulp.task('slim', function () {
     .pipe($.filter(function (file) {
         return !/\/_/.test(file.path) && !/^_/.test(file.relative);
     }))
+    // Wrap files into application
+    .pipe($.wrap({ src: slim_dev + 'layout/application.slim'}))
     // compile slim to html
     .pipe($.slim({
       pretty: false,
@@ -119,16 +121,22 @@ gulp.task('sass', function () {
 // ---------------------------------------------------------
 gulp.task('optimizeCss', function () {
   return gulp.src(sass_build + '/*.min.css')
-  // remove unused css
-   .pipe($.uncss({
-      html: [build + '/**/*.html']
-   }))
-   // minify css
-   .pipe($.cleanCss())
-   // copy result to build folder
-   .pipe(gulp.dest(sass_build))
-   // notify when task completed
-   .pipe($.notify({message: 'Css are optimized !', onLast: true}));
+    // prevent server from crashing
+    .pipe($.plumber({ errorHandler: function(err) {
+      $.notify.onError({
+          title: "Gulp error in " + err.plugin,
+      })(err);
+    }}))
+    // remove unused css
+     .pipe($.uncss({
+        html: [build + '/**/*.html']
+     }))
+     // minify css
+     .pipe($.cleanCss())
+     // copy result to build folder
+     .pipe(gulp.dest(sass_build))
+     // notify when task completed
+     .pipe($.notify({message: 'Css are optimized !', onLast: true}));
 });
 
 
@@ -231,6 +239,18 @@ gulp.task('img', function () {
 
 
 
+// TASK CLEAN TRASH
+// ---------------------------------------------------------
+gulp.task('trash', function () {
+  return gulp.src(build + '/application.html', { read: false })
+    // remove folder build
+    .pipe($.rimraf())
+    // notify when task completed
+    .pipe($.notify('Useless html files removed !'));
+});
+
+
+
 // RELOAD
 // ---------------------------------------------------------
 
@@ -279,7 +299,7 @@ gulp.task('dev', gulpSequence('clean', 'slim', 'sass', 'cssVendors', 'coffee', '
 
 // TASK BUILD ($ gulp build)
 // ---------------------------------------------------------
-gulp.task('build', gulpSequence('dev', 'optimizeCss'));
+gulp.task('build', gulpSequence('dev', 'optimizeCss', 'trash'));
 
 
 
